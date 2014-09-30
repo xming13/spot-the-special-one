@@ -6,26 +6,61 @@ XMing.GameStateManager = new function() {
     var score = 0;
     var gameTimer;
     var remainingTime;
-    var dataArray = [
-        { available: ["i"], special: "l" },
-        { available: ["O"], special: "0" },
-        { available: ["0"], special: "O" },
-        { available: ["5"], special: "S"},
+    var dataArray = [{
+        available: ["i"],
+        special: "l"
+    }, {
+        available: ["O"],
+        special: "0"
+    }, {
+        available: ["0"],
+        special: "O"
+    }, {
+        available: ["5"],
+        special: "S"
+    },
 
-        { available: ["p"], special: "q"},
-        { available: ["8"], special: "3"},
-        { available: ["m"], special: "nn"},
-        { available: ["w"], special: "vv"},
+        {
+            available: ["p"],
+            special: "q"
+        }, {
+            available: ["8"],
+            special: "3"
+        }, {
+            available: ["m"],
+            special: "nn"
+        }, {
+            available: ["w"],
+            special: "vv"
+        },
 
-        { available: ["u"], special: "&#xB5;"},
-        { available: ["x"], special: "&#10008;"},
-        { available: ["d"], special: "cl"},
-        { available: ["O"], special: "Q"},
+        {
+            available: ["u"],
+            special: "&#xB5;"
+        }, {
+            available: ["x"],
+            special: "&#10008;"
+        }, {
+            available: ["d"],
+            special: "cl"
+        }, {
+            available: ["O"],
+            special: "Q"
+        },
 
-        { available: ["3", "6", "8", "9", "0"], special: "S"},
-        { available: ["a", "e", "i", "o", "u"], special: "n"},
-        { available: ["v", "w", "x", "y", "z"], special: "u"},
-        { available: ["V", "W", "X", "Y"], special: "M"}
+        {
+            available: ["3", "6", "8", "9", "0"],
+            special: "S"
+        }, {
+            available: ["a", "e", "i", "o", "u"],
+            special: "n"
+        }, {
+            available: ["v", "w", "x", "y", "z"],
+            special: "u"
+        }, {
+            available: ["V", "W", "X", "Y"],
+            special: "M"
+        }
     ];
     var range = _.range(_.size(dataArray));
 
@@ -48,7 +83,7 @@ XMing.GameStateManager = new function() {
         range = _.without(range, index);
 
         var data = dataArray[index];
-        var numTimes =  Math.ceil(15 / _.size(data.available));
+        var numTimes = Math.ceil(15 / _.size(data.available));
 
         var availableArray = [];
         _.times(numTimes, function() {
@@ -89,8 +124,7 @@ XMing.GameStateManager = new function() {
                 $("#timer-value").removeClass("animated fadeIn");
 
                 XMing.GameStateManager.loadNextRound();
-            }
-            else {
+            } else {
                 gameTimer = setTimeout(countdown, 500);
             }
         })();
@@ -121,14 +155,15 @@ XMing.GameStateManager = new function() {
 
             $("#timer-value").removeClass("animated fadeIn");
             $("#score-value").html(score);
-            $(".score-change").animate(
-                { top: '-25px' },
-                { duration: 1000,
-                  complete: function() {
-                      $(".score-change")
-                          .html("")
-                          .css("top", "-10px");
-                  }
+            $(".score-change").animate({
+                top: '-25px'
+            }, {
+                duration: 1000,
+                complete: function() {
+                    $(".score-change")
+                        .html("")
+                        .css("top", "-10px");
+                }
             });
             clearTimeout(gameTimer);
             XMing.GameStateManager.loadNextRound();
