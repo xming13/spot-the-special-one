@@ -254,7 +254,10 @@ XMing.GameStateManager = new function() {
         this.onResize();
         $('html, body').scrollTop($("#panel-container").offset().top);
 
-        alert('Congratulations!\rYour score is ' + score + '!\rThanks for playing!');
+        swal({ title: "Congratulations!",
+            text: "Your score is " + score + "! :D",
+            imageUrl: "images/oo0oo.png"
+        });
     };
 
     // check game state
