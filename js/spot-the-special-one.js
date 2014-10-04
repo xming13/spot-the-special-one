@@ -78,6 +78,7 @@ XMing.GameStateManager = new function() {
     };
 
     this.loadData = function() {
+        var self = this;
 
         var index = _.sample(range);
         range = _.without(range, index);
@@ -123,7 +124,7 @@ XMing.GameStateManager = new function() {
                     .css("color", "rgba(17, 189, 255, 255)");
                 $("#timer-value").removeClass("animated fadeIn");
 
-                XMing.GameStateManager.loadNextRound();
+                self.loadNextRound();
             } else {
                 gameTimer = setTimeout(countdown, 500);
             }
@@ -166,11 +167,13 @@ XMing.GameStateManager = new function() {
                 }
             });
             clearTimeout(gameTimer);
-            XMing.GameStateManager.loadNextRound();
+            self.loadNextRound();
         });
     };
 
     this.loadNextRound = function() {
+        var self = this;
+
         var gameGrid = $("ul.game-grid");
         $("#result")
             .width(gameGrid.width())
@@ -181,9 +184,9 @@ XMing.GameStateManager = new function() {
             $("#result").hide();
 
             if (_.size(range) > 0) {
-                XMing.GameStateManager.loadData();
+                self.loadData();
             } else {
-                XMing.GameStateManager.endGame();
+                self.endGame();
             }
         }, 1000);
     };
@@ -204,6 +207,11 @@ XMing.GameStateManager = new function() {
     // game status operation
     this.initGame = function() {
         gameState = GAME_STATE_ENUM.INITIAL;
+
+        var self = this;
+        $(".icon-repeat").click(function() {
+            self.startGame();
+        });
     };
 
     this.startGame = function() {
@@ -247,9 +255,6 @@ XMing.GameStateManager = new function() {
         $('html, body').scrollTop($("#panel-container").offset().top);
 
         alert('Congratulations!\rYour score is ' + score + '!\rThanks for playing!');
-        $(".icon-repeat").click(function() {
-            XMing.GameStateManager.startGame();
-        });
     };
 
     // check game state
