@@ -141,7 +141,7 @@ XMing.GameStateManager = new function() {
                 score += remainingTime * 10;
                 $(".score-change")
                     .html("+" + remainingTime * 10)
-                    .css("color", "rgba(0, 255, 0, 255)");;
+                    .css("color", "rgba(0, 255, 0, 255)");
             } else {
                 $("#result-content")
                     .html("Wrong!")
@@ -254,7 +254,8 @@ XMing.GameStateManager = new function() {
         this.onResize();
         $('html, body').scrollTop($("#panel-container").offset().top);
 
-        swal({ title: "Congratulations!",
+        swal({
+            title: "Congratulations!",
             text: "Your score is " + score + "! :D",
             imageUrl: "images/oo0oo.png"
         });
