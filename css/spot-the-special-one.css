@@ -41,18 +41,18 @@ a {
     text-decoration: none;
 }
 
-.container {
+#container {
     width: 70%;
     margin: 0 auto;
 }
 
-.container > header {
+#container > header {
     width: 100%;
     margin: 0 auto;
     padding: 46px 30px 30px;
 }
 
-.container > header h1 {
+#container > header h1 {
     font-size: 34px;
     line-height: 1.3;
     margin: 0;
@@ -60,7 +60,7 @@ a {
     font-weight: 400;
 }
 
-.container > header span {
+#container > header span {
     display: block;
     font-weight: 700;
     text-transform: uppercase;
@@ -68,11 +68,11 @@ a {
     padding: 0 0 10px 2px;
 }
 
-.container > header nav {
+#container > header nav {
     float: right;
 }
 
-.container > header nav a {
+#container > header nav a {
     display: block;
     float: left;
     position: relative;
@@ -87,7 +87,7 @@ a {
     border: 4px solid #ff0;
 }
 
-.container > header nav a:after {
+#container > header nav a:after {
     content: attr(data-info);
     color: #444;
     position: absolute;
@@ -99,15 +99,15 @@ a {
     pointer-events: none;
 }
 
-.container > header nav a:hover:after {
+#container > header nav a:hover:after {
     opacity: 1;
 }
 
-.container > header nav a:hover {
+#container > header nav a:hover {
     background: #b2b271;
 }
 
-.container > header nav a:hover:before {
+#container > header nav a:hover:before {
     color: #fff;
 }
 
@@ -362,7 +362,7 @@ a {
 and (min-device-width : 320px)
 and (max-device-width : 540px) {
     /* Styles */
-    .container {
+    #container {
         width: 90%;
     }
 

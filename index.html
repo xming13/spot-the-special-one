@@ -33,7 +33,7 @@
 </head>
 
 <body>
-<div class="container">
+<div id="container">
     <header class="clearfix">
             <span>
           Enjoy
@@ -94,20 +94,6 @@
             </div>
         </div>
     </div>
-    <footer class="clearfix">
-        <div class="xming-games">
-            <a href="https://xming13.github.io/catch-a-falling-star" class="icon-catch-a-falling-star icon-game" target="_blank" data-info="Catch a Falling Star">
-            </a>
-            <a href="https://xming13.github.io/find-the-word" class="icon-find-the-word icon-game" target="_blank" data-info="Find The Word">
-            </a>
-            <a href="https://xming13.github.io/easter-bunnies" class="icon-easter-bunnies icon-game" target="_blank" data-info="Easter Bunnies">
-            </a>
-            <a href="https://xming13.github.io/spot-the-special-one" class="icon-spot-the-special-one icon-game icon-left" target="_blank" data-info="Spot The Special One">
-            </a>
-            <a href="https://xming13.github.io/mushrooms" class="icon-mushrooms icon-game icon-left" target="_blank" data-info="Mushrooms">
-            </a>
-        </div>
-    </footer>
 </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -117,8 +103,21 @@
 <script src="js/spot-the-special-one.min.js"></script>
 
 <script>
-    window.onload = function() {
+    function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = func;
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    }
 
+    addLoadEvent(function() {
         XMing.GameStateManager.init();
 
         $(".btn-play").click(function() {
@@ -130,7 +129,7 @@
 
             XMing.GameStateManager.startGame();
         });
-    };
+    });
 </script>
 </body>
 
