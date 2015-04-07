@@ -72,12 +72,7 @@ XMing.GameStateManager = new function() {
         END: "end"
     };
 
-    this.init = function() {
-        window.addEventListener("resize", this.onResize.bind(this), false);
-        this.initGame();
-    };
-
-    this.loadData = function() {
+    this.setupGameNode = function() {
         var self = this;
 
         var index = _.sample(range);
@@ -105,7 +100,7 @@ XMing.GameStateManager = new function() {
             $(".game-grid").append(html);
         });
         this.onResize();
-        $('html, body').scrollTop($("#panel-container").offset().top);
+        $('html, body').scrollTop($(".panel-container").offset().top);
 
         remainingTime = 3.5;
 
@@ -124,7 +119,7 @@ XMing.GameStateManager = new function() {
                     .css("color", "rgba(17, 189, 255, 255)");
                 $("#timer-value").removeClass("animated fadeIn");
 
-                self.loadNextRound();
+                self.setupNextRound();
             } else {
                 gameTimer = setTimeout(countdown, 500);
             }
@@ -167,11 +162,10 @@ XMing.GameStateManager = new function() {
                 }
             });
             clearTimeout(gameTimer);
-            self.loadNextRound();
+            self.setupNextRound();
         });
     };
-
-    this.loadNextRound = function() {
+    this.setupNextRound = function() {
         var self = this;
 
         var gameGrid = $("ul.game-grid");
@@ -184,7 +178,7 @@ XMing.GameStateManager = new function() {
             $("#result").hide();
 
             if (_.size(range) > 0) {
-                self.loadData();
+                self.setupGameNode();
             } else {
                 self.endGame();
             }
@@ -204,26 +198,49 @@ XMing.GameStateManager = new function() {
         });
     };
 
-    // game status operation
+    // Game status operation
     this.initGame = function() {
+        var self = this;
         gameState = GAME_STATE_ENUM.INITIAL;
 
-        var self = this;
+        window.addEventListener("resize", this.onResize.bind(this), false);
+
+        FastClick.attach(document.body);
+
+        $(".btn-play").click(function() {
+            self.startGame();
+        });
+
+        $(".btn-leaderboard").click(function() {
+            self.showLeaderboard();
+        });
+
+        $(".icon-back").click(function() {
+            $(".panel-game").hide();
+            $(".panel-leaderboard").hide();
+            $(".panel-main").show();
+        });
+
         $(".icon-repeat").click(function() {
             self.startGame();
         });
     };
-
     this.startGame = function() {
         gameState = GAME_STATE_ENUM.START;
         score = 0;
         range = _.range(_.size(dataArray));
+
+        $(".panel-main").hide();
+        $(".panel-game").show();
         $("#timer").show();
         $("#replay").hide();
 
-        this.loadData();
-    };
+        $('html, body').animate({
+            scrollTop: $(".panel-container").offset().top
+        }, 'fast');
 
+        this.setupGameNode();
+    };
     this.endGame = function() {
         gameState = GAME_STATE_ENUM.END;
 
@@ -252,25 +269,80 @@ XMing.GameStateManager = new function() {
         $("#replay").show();
         $("#score-value").html(score);
         this.onResize();
-        $('html, body').scrollTop($("#panel-container").offset().top);
+        $('html, body').scrollTop($(".panel-container").offset().top);
 
         swal({
-            title: "Congratulations!",
+            title: "Well Done!",
             text: "Your score is " + score + "! :D",
-            imageUrl: "images/oo0oo.png"
+            imageUrl: "images/oo0oo.png",
+            closeOnConfirm: false
+        }, function() {
+            swal({
+                title: "Thanks for playing!!!",
+                imageUrl: "images/love.png",
+                type: "input",
+                text: "Write your name here! It will appear in the leaderboard!",
+                closeOnConfirm: false
+            }, function(playerName) {
+                if (playerName == "") {
+                    swal.showInputError("You need to write something! A nickname is fine too!");
+                    return false;
+                } else {
+                    $.ajax({
+                        method: "POST",
+                        url: 'http://weiseng.redairship.com/leaderboard/api/1/highscore.json',
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            game_id: 4,
+                            username: playerName,
+                            score: score
+                        })
+                    }).success(function(data) {
+                        swal("Congratulations!", "You are currently ranked " + data.rank_text + "!", "success");
+                    }).fail(function() {
+                        swal("Oops...", "Something went wrong!", "error");
+                    });
+                }
+            });
+        });
+    };
+    this.showLeaderboard = function() {
+        $(".panel-main").hide();
+        $(".panel-leaderboard").show();
+
+        $(".highscore-list").html("");
+
+        $.get("http://weiseng.redairship.com/leaderboard/api/1/highscore.json?game_id=4", function(data) {
+            var numDummyData = 10 - data.length;
+            for (var i = 0; i < numDummyData; i++) {
+                data.push({
+                    username: '----------',
+                    score: 0
+                });
+            }
+
+            _.each(data, function(highscore, index) {
+                setTimeout(function() {
+                    $(".highscore-list").append('<li class="animated slideInUp">' + (index + 1) + ': ' + highscore.username + ' - ' + highscore.score + '</li>');
+                }, index * 200);
+            });
+        }).fail(function() {
+            swal("Oops...", "Something went wrong!", "error");
         });
     };
 
-    // check game state
+    // Check game state
     this.isGameStateInitial = function() {
         return gameState == GAME_STATE_ENUM.INITIAL;
     };
-
     this.isGameStateStart = function() {
         return gameState == GAME_STATE_ENUM.START;
     };
-
     this.isGameStateEnd = function() {
         return gameState == GAME_STATE_ENUM.END;
     };
 };
+
+$(function() {
+    XMing.GameStateManager.initGame();
+});

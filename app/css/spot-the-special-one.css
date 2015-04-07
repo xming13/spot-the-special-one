@@ -73,18 +73,19 @@ a {
 }
 
 #container > header nav a {
-    display: block;
-    float: left;
     position: relative;
     width: 40px;
     height: 40px;
+    margin: 0 2px;
     background: #fff;
+    color: transparent;
+    font-weight: bold;
+    border: 4px solid #ff0;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    color: transparent;
-    margin: 0 2px;
-    border: 4px solid #ff0;
+    display: block;
+    float: left;
 }
 
 #container > header nav a:after {
@@ -174,9 +175,15 @@ a {
     margin: 30px 0;
 }
 
-.btn-play {
-    display: inline-block;
-    padding: 10px 70px;
+.button-holder {
+    margin-bottom: 5px;
+}
+
+.btn-play,
+.btn-leaderboard {
+    display:inline-block;
+    padding: 10px 0;
+    width: 174px;
     font-size: 15px;
     font-weight: normal;
     text-align: center;
@@ -189,14 +196,16 @@ a {
     cursor: pointer;
 }
 
-.btn-play:hover {
+.btn-play:hover,
+.btn-leaderboard:hover{
     color: #333;
     background-color: #ffee00;
     border-color: #ffff11;
     outline: 0px none;
 }
 
-.panel-game {
+.panel-game,
+.panel-leaderboard {
     position: relative;
     width: 60%;
     margin: 0 auto;
@@ -205,7 +214,13 @@ a {
 #replay {
     float: left;
 }
-.icon-repeat {
+
+.scoreboard {
+    height: 35px;
+    margin-bottom: 15px;
+}
+
+.icon-circle {
     display: block;
     float: left;
     position: relative;
@@ -219,7 +234,7 @@ a {
     border: 4px solid #555;
     cursor: pointer;
 }
-.icon-repeat:before {
+.icon-circle:before {
     font-family: 'fontawesome';
     position: absolute;
     top: 0;
@@ -233,28 +248,43 @@ a {
     text-align: center;
     color: #555;
     -webkit-font-smoothing: antialiased;
-    content: "\f01e";
 }
 
-.icon-repeat:after {
+.icon-repeat:before {
+    content:"\f01e";
+}
+.icon-back:before {
+    content: "\f053";
+}
+
+.icon-circle:after {
     content: attr(data-info);
-    color: #444;
     position: absolute;
-    width: 90px;
-    top: 5px;
-    text-align: right;
-    left: 25px;
+    top: -28px;
+    left: 0;
+    width: 95px;
+    text-align: left;
+    font-weight: bold;
+    color: #444;
     opacity: 0;
     pointer-events: none;
 }
-.icon-repeat:hover {
+.icon-circle:hover {
     background: #ffd;
 }
-.icon-repeat:hover:before {
+.icon-circle:hover:before {
     color: #999;
 }
-.icon-repeat:hover:after {
+.icon-circle:hover:after {
     opacity: 1;
+}
+
+.icon-repeat {
+    margin-left: 20px;
+}
+
+.icon-back-holder .icon-back {
+    position: absolute;
 }
 
 #timer {
@@ -359,6 +389,27 @@ a {
     -webkit-text-shadow: 0 0 5px #000;
 }
 
+.heading {
+    color: #FF5700;
+    font-size: 30px;
+}
+
+.highscore-list {
+    margin: 0;
+    padding: 0;
+    background: #FFEB52;
+}
+
+.highscore-list li {
+    height: 40px;
+    border: 2px solid #D87300;
+    background: #FFEA7E;
+    color: #D54100;
+    font-size: 20px;
+    line-height: 40px;
+    list-style: none;
+}
+
 /* Desktops and laptops ----------- */
 @media only screen and (min-width: 1224px) {
 }
@@ -371,7 +422,8 @@ and (max-device-width : 540px) {
         width: 90%;
     }
 
-    .panel-game {
+    .panel-game,
+    .panel-leaderboard {
         width: 100%;
     }
 
@@ -392,5 +444,9 @@ and (max-device-width : 540px) {
 
     #result {
         left: 0;
+    }
+
+    .icon-back:after {
+        content: '';
     }
 }

@@ -54,8 +54,8 @@
         </nav>
     </header>
     <div class="main-content">
-        <div class="panel-container" id="panel-container" name="panel-container">
-            <div id="panel-main" class="panel-main">
+        <div class="panel-container" name="panel-container">
+            <div class="panel-main">
                 <div class="title">
                     Spot
                 </div>
@@ -71,11 +71,19 @@
                         PLAY
                     </a>
                 </div>
+                <div class="button-holder">
+                    <a class="btn-leaderboard">
+                        LEADERBOARD
+                    </a>
+                </div>
             </div>
-            <div id="panel-game" class="panel-game" style="display: none;">
+            <div class="panel-game" style="display: none;">
                 <div class="scoreboard clearfix">
                     <div id="replay" style="display: none;">
-                        <a class="icon-repeat" data-info="Play again">
+                        <a class="icon-back icon-circle" data-info="Back to home">
+                            Back to home
+                        </a>
+                        <a class="icon-repeat icon-circle" data-info="Play again">
                             Play again
                         </a>
                     </div>
@@ -94,44 +102,27 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-leaderboard" style="display:none;">
+                <div class="scoreboard clearfix">
+                    <div class="icon-back-holder">
+                        <a class="icon-back icon-circle" data-info="Back to home">
+                            Back to home
+                        </a>
+                    </div>
+                    <div class="heading">
+                        Leaderboard
+                    </div>
+                </div>
+                <div class="highscore-wrapper">
+                    <ul class="highscore-list"></ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="js/app.js"></script>
 <script src="https://xming13.github.io/games/js/xming-games.min.js"></script>
-
-<script>
-    function addLoadEvent(func) {
-        var oldonload = window.onload;
-        if (typeof window.onload != 'function') {
-            window.onload = func;
-        } else {
-            window.onload = function() {
-                if (oldonload) {
-                    oldonload();
-                }
-                func();
-            }
-        }
-    }
-
-    addLoadEvent(function() {
-        FastClick.attach(document.body);
-
-        XMing.GameStateManager.init();
-
-        $(".btn-play").click(function() {
-            $("#panel-main").hide();
-            $("#panel-game").show();
-            $('html, body').animate({
-                scrollTop: $("#panel-container").offset().top
-            }, 'fast');
-
-            XMing.GameStateManager.startGame();
-        });
-    });
-</script>
 </body>
 
 </html>
