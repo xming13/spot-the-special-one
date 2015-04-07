@@ -7,18 +7,18 @@ XMing.GameStateManager = new function() {
     var gameTimer;
     var remainingTime;
     var dataArray = [{
-        available: ["i"],
-        special: "l"
-    }, {
-        available: ["O"],
-        special: "0"
-    }, {
-        available: ["0"],
-        special: "O"
-    }, {
-        available: ["5"],
-        special: "S"
-    },
+            available: ["i"],
+            special: "l"
+        }, {
+            available: ["O"],
+            special: "0"
+        }, {
+            available: ["0"],
+            special: "O"
+        }, {
+            available: ["5"],
+            special: "S"
+        },
 
         {
             available: ["p"],
