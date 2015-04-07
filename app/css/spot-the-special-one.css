@@ -390,21 +390,21 @@ a {
 }
 
 .heading {
-    color: #FF5700;
+    color: #5F5F31;
     font-size: 30px;
 }
 
 .highscore-list {
     margin: 0;
     padding: 0;
-    background: #FFEB52;
+    background: #FFF6B8;
 }
 
 .highscore-list li {
     height: 40px;
-    border: 2px solid #D87300;
-    background: #FFEA7E;
-    color: #D54100;
+    border: 2px solid #B69800;
+    background: #FCFF7E;
+    color: #96874A;
     font-size: 20px;
     line-height: 40px;
     list-style: none;
