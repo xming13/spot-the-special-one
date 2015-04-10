@@ -410,6 +410,11 @@ a {
     list-style: none;
 }
 
+.special {
+    font-style: italic;
+    letter-spacing: -20px;
+}
+
 /* Desktops and laptops ----------- */
 @media only screen and (min-width: 1224px) {
 }

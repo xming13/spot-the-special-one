@@ -3,68 +3,72 @@ var XMing = XMing || {};
 XMing.GameStateManager = new function() {
 
     var gameState;
+    var userData;
     var score = 0;
     var gameTimer;
     var remainingTime;
     var dataArray = [{
-            available: ["i"],
-            special: "l"
-        }, {
-            available: ["O"],
-            special: "0"
-        }, {
-            available: ["0"],
-            special: "O"
-        }, {
-            available: ["5"],
-            special: "S"
-        },
-
-        {
-            available: ["p"],
-            special: "q"
-        }, {
-            available: ["8"],
-            special: "3"
-        }, {
-            available: ["m"],
-            special: "nn"
-        }, {
-            available: ["w"],
-            special: "vv"
-        },
-
-        {
-            available: ["u"],
-            special: "&#xB5;"
-        }, {
-            available: ["x"],
-            special: "&#10008;"
-        }, {
-            available: ["d"],
-            special: "cl"
-        }, {
-            available: ["O"],
-            special: "Q"
-        },
-
-        {
-            available: ["3", "6", "8", "9", "0"],
-            special: "S"
-        }, {
-            available: ["a", "e", "i", "o", "u"],
-            special: "n"
-        }, {
-            available: ["v", "w", "x", "y", "z"],
-            special: "u"
-        }, {
-            available: ["V", "W", "X", "Y"],
-            special: "M"
-        }
-    ];
+        available: ["i"],
+        special: "l"
+    }, {
+        available: ["O"],
+        special: "0"
+    }, {
+        available: ["0"],
+        special: "O"
+    }, {
+        available: ["5"],
+        special: "S"
+    }, {
+        available: ["p"],
+        special: "q"
+    }, {
+        available: ["8"],
+        special: "3"
+    }, {
+        available: ["m"],
+        special: "nn"
+    }, {
+        available: ["w"],
+        special: "vv"
+    }, {
+        available: ["u"],
+        special: "&#xB5;"
+    }, {
+        available: ["x"],
+        special: "&#155;&#139;" // ><
+    }, {
+        available: ["d"],
+        special: "cl"
+    }, {
+        available: ["O"],
+        special: "Q"
+    }, {
+        available: ["3", "6", "8", "9", "0"],
+        special: "S"
+    }, {
+        available: ["a", "e", "i", "o", "u"],
+        special: "7"
+    }, {
+        available: ["S"],
+        special: "&#36;" // $
+    }, {
+        available: [":"],
+        special: ";"
+    }, {
+        available: ["?"],
+        special: "&#191;" // inverted ?
+    }, {
+        available: ["&#204;"], // `i
+        special: "&#205;" // i'
+    }, {
+        available: ["%"],
+        special: "&#8453;" // c/o
+    }];
     var range = _.range(_.size(dataArray));
 
     // declare CONSTANTS
+    var VERSION_NUMBER = 1;
     var GAME_STATE_ENUM = {
         INITIAL: "initial",
         START: "start",
@@ -116,8 +120,14 @@ XMing.GameStateManager = new function() {
                 $("#result-content")
                     .html("Time's up!")
                     .addClass('animated bounceIn')
-                    .css("color", "rgba(17, 189, 255, 255)");
+                    .css("color", "#11BDFF");
                 $("#timer-value").removeClass("animated fadeIn");
+
+                $("ul.game-grid li .content").each(function() {
+                    if ($(this).data("special")) {
+                        $(this).css("background", "#FFFBCF");
+                    }
+                });
 
                 self.setupNextRound();
             } else {
@@ -131,17 +141,23 @@ XMing.GameStateManager = new function() {
                 $("#result-content")
                     .html("Correct!")
                     .addClass('animated bounceIn')
-                    .css("color", "rgba(0, 255, 0, 255)");
+                    .css("color", "#0F0");
 
                 score += remainingTime * 10;
                 $(".score-change")
                     .html("+" + remainingTime * 10)
-                    .css("color", "rgba(0, 255, 0, 255)");
+                    .css("color", "#0F0");
             } else {
                 $("#result-content")
                     .html("Wrong!")
                     .addClass('animated bounceIn')
-                    .css("color", "rgba(255, 0, 0, 255)");
+                    .css("color", "#F00");
+
+                $("ul.game-grid li .content").each(function() {
+                    if ($(this).data("special")) {
+                        $(this).css("background", "#FFFBCF");
+                    }
+                });
 
                 score -= remainingTime * 10;
                 $(".score-change")
@@ -185,8 +201,22 @@ XMing.GameStateManager = new function() {
         }, 1000);
     };
 
-    this.onResize = function(event) {
+    this.preloadImage = function() {
+        var imgYellowEgg = new Image();
+        imgYellowEgg.src = "images/yellow-egg.png";
+
+        var imgOrangeEgg = new Image();
+        imgOrangeEgg.src = "images/orange-egg.png";
+
+        var imgBlueEgg = new Image();
+        imgBlueEgg.src = "images/blue-egg.png";
+    }
+    this.onResize = function() {
         var lis = $(".game-grid").children("li");
+
+        if (lis.length === 0) {
+            return;
+        }
 
         var liMaxWidth = _.max(lis, function(li) {
             return $(li).width();
@@ -207,6 +237,14 @@ XMing.GameStateManager = new function() {
 
         FastClick.attach(document.body);
 
+        this.preloadImage();
+
+        userData = this.loadData();
+
+        swal.setDefaults({
+            confirmButtonColor: '#EAF53B'
+        });
+
         $(".btn-play").click(function() {
             self.startGame();
         });
@@ -224,6 +262,8 @@ XMing.GameStateManager = new function() {
         $(".icon-repeat").click(function() {
             self.startGame();
         });
+
+        this.checkPlayedEasterEgg();
     };
     this.startGame = function() {
         gameState = GAME_STATE_ENUM.START;
@@ -242,6 +282,7 @@ XMing.GameStateManager = new function() {
         this.setupGameNode();
     };
     this.endGame = function() {
+        var self = this;
         gameState = GAME_STATE_ENUM.END;
 
         var html = "<li><div class='content'>#</div></li>";
@@ -261,7 +302,7 @@ XMing.GameStateManager = new function() {
 
         html += "<li><div class='content'>#</div></li>";
         html += "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content'>#</div></li>";
+        html += "<li><div class='content special'>&#135;&#135;</div></li>";
         html += "<li><div class='content'>#</div></li>";
 
         $(".game-grid").html(html);
@@ -305,12 +346,36 @@ XMing.GameStateManager = new function() {
                 }
             });
         });
+
+        $(".special").click(function() {
+            swal({
+                title: 'Congratulations!',
+                text: 'You have found the Yellow Egg!',
+                imageUrl: 'images/yellow-egg.png'
+            });
+
+            userData.easterEgg.specialOne = true;
+            self.saveData(userData);
+        });
+
+        if (!userData.played.specialOne) {
+            userData.played.specialOne = true;
+            this.saveData(userData);
+        }
     };
     this.showLeaderboard = function() {
+        var self = this;
+        
         $(".panel-main").hide();
         $(".panel-leaderboard").show();
 
         $(".highscore-list").html("");
+
+        if (!userData.leaderboard.mushrooms) {
+            userData.leaderboard.mushrooms = true;
+            self.saveData(userData);
+            self.checkLeaderboardEasterEgg();
+        }
 
         $.get("http://weiseng.redairship.com/leaderboard/api/1/highscore.json?game_id=4", function(data) {
             var numDummyData = 10 - data.length;
@@ -340,6 +405,91 @@ XMing.GameStateManager = new function() {
     };
     this.isGameStateEnd = function() {
         return gameState == GAME_STATE_ENUM.END;
+    };
+
+    // Easter Egg
+    this.checkPlayedEasterEgg = function() {
+        if (!userData.easterEgg.allPlayed) {
+            if (_.every(userData.played)) {
+                userData.easterEgg.allPlayed = true;
+                this.saveData(userData);
+                swal({
+                    title: 'Congratulations!',
+                    text: 'You have found the Blue Egg!',
+                    imageUrl: 'images/blue-egg.png'
+                });
+            }
+        }
+    };
+    this.checkLeaderboardEasterEgg = function() {
+        if (!userData.easterEgg.allLeaderboard) {
+            if (_.every(userData.leaderboard)) {
+                userData.easterEgg.allLeaderboard = true;
+                this.saveData(userData);
+                swal({
+                    title: 'Congratulations!',
+                    text: 'You have found the Ninja Egg!',
+                    imageUrl: 'images/ninja-egg.png'
+                });
+            }
+        }
+    };
+
+    // Local storage
+    this.saveData = function(userData) {
+        if (window.localStorage) {
+            window.localStorage.setItem('data', btoa(encodeURIComponent(JSON.stringify(userData))));
+        }
+    };
+    this.loadData = function() {
+        if (window.localStorage) {
+            var data = window.localStorage.getItem('data');
+            if (data) {
+                var parsedData = JSON.parse(decodeURIComponent(atob(data)));
+                // make sure version is the same
+                if (parsedData.version === VERSION_NUMBER) {
+                    return parsedData;
+                }
+            }
+        }
+        var data = {
+            played: {
+                bunny: false,
+                star: false,
+                specialOne: false,
+                mushrooms: false,
+                word: false,
+                numbers: false,
+                squirrel: false
+            },
+            leaderboard: {
+                bunny: false,
+                star: false,
+                specialOne: false,
+                mushrooms: false,
+                word: false,
+                numbers: false,
+                squirrel: false
+            },
+            squirrel: {
+                level: 0,
+                inHallOfFame: false
+            },
+            easterEgg: {
+                allGames: false,
+                allLeaderboard: false,
+                findTheWord: false,
+                followTheNumbers: false,
+                spotTheSpecialOne: false,
+                mushrooms: false,
+                squirrel: false
+            },
+            version: VERSION_NUMBER
+        };
+
+        this.saveData(data);
+
+        return data;
     };
 };
 
