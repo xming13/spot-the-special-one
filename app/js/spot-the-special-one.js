@@ -205,11 +205,11 @@ XMing.GameStateManager = new function() {
         var imgYellowEgg = new Image();
         imgYellowEgg.src = "images/yellow-egg.png";
 
-        var imgOrangeEgg = new Image();
-        imgOrangeEgg.src = "images/orange-egg.png";
-
         var imgBlueEgg = new Image();
         imgBlueEgg.src = "images/blue-egg.png";
+
+        var imgNinjaEgg = new Image();
+        imgNinjaEgg.src = "images/ninja-egg.png";
     }
     this.onResize = function() {
         var lis = $(".game-grid").children("li");
@@ -365,7 +365,7 @@ XMing.GameStateManager = new function() {
     };
     this.showLeaderboard = function() {
         var self = this;
-        
+
         $(".panel-main").hide();
         $(".panel-leaderboard").show();
 
