@@ -427,9 +427,9 @@ XMing.GameStateManager = new function() {
 
     // Easter Egg
     this.checkPlayedEasterEgg = function() {
-        if (!userData.easterEgg.allPlayed) {
+        if (!userData.easterEgg.allGames) {
             if (_.every(userData.played)) {
-                userData.easterEgg.allPlayed = true;
+                userData.easterEgg.allGames = true;
                 this.saveData(userData);
                 swal({
                     title: 'Congratulations!',
