@@ -216,6 +216,9 @@ XMing.GameStateManager = new function() {
 
         var imgNinjaEgg = new Image();
         imgNinjaEgg.src = "images/ninja-egg.png";
+
+        var imgLove = new Image();
+        imgLove.src = "images/love.png";
     }
     this.onResize = function() {
         var lis = $(".game-grid").children("li");
