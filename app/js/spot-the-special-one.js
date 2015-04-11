@@ -12,6 +12,9 @@ XMing.GameStateManager = new function() {
         available: ["i"],
         special: "l"
     }, {
+        available: ["l"],
+        special: "i"
+    }, {
         available: ["O"],
         special: "0"
     }, {
@@ -21,8 +24,20 @@ XMing.GameStateManager = new function() {
         available: ["5"],
         special: "S"
     }, {
+        available: ["S"],
+        special: "5"
+    }, {
         available: ["p"],
         special: "q"
+    }, {
+        available: ["q"],
+        special: "p"
+    }, {
+        available: ["|"],
+        special: "l"
+    }, {
+        available: ["l"],
+        special: "|"
     }, {
         available: ["8"],
         special: "3"
