@@ -7,6 +7,7 @@ XMing.GameStateManager = new function() {
     var score = 0;
     var gameTimer;
     var remainingTime;
+    var roundStartTime;
     var dataArray = [{
         available: ["i"],
         special: "l"
@@ -107,6 +108,7 @@ XMing.GameStateManager = new function() {
         $('html, body').scrollTop($(".panel-container").offset().top);
 
         remainingTime = 3.5;
+        roundStartTime = new Date();
 
         (function countdown() {
             remainingTime -= 0.5;
@@ -136,6 +138,10 @@ XMing.GameStateManager = new function() {
         })();
 
         $("ul.game-grid li").click(function() {
+            var roundEndTime = new Date();
+            var timeGiven = 3.0;
+            var timeRemained = timeGiven - (roundEndTime.getTime() - roundStartTime.getTime()) / 1000;
+            var scoreChanged = Math.ceil(timeRemained * 10);
 
             if ($(this.firstChild).data("special")) {
                 $("#result-content")
@@ -143,10 +149,10 @@ XMing.GameStateManager = new function() {
                     .addClass('animated bounceIn')
                     .css("color", "#0F0");
 
-                score += remainingTime * 10;
+                score += scoreChanged;
                 $(".score-change")
-                    .html("+" + remainingTime * 10)
-                    .css("color", "#0F0");
+                    .html("+" + scoreChanged)
+                    .css("color", "#00E000");
             } else {
                 $("#result-content")
                     .html("Wrong!")
@@ -159,10 +165,10 @@ XMing.GameStateManager = new function() {
                     }
                 });
 
-                score -= remainingTime * 10;
+                score -= scoreChanged;
                 $(".score-change")
-                    .html("-" + remainingTime * 10)
-                    .css("color", "rgba(255, 0, 0, 255)");
+                    .html("-" + scoreChanged)
+                    .css("color", "#F00");
             }
 
             $("#timer-value").removeClass("animated fadeIn");
@@ -285,27 +291,26 @@ XMing.GameStateManager = new function() {
         var self = this;
         gameState = GAME_STATE_ENUM.END;
 
-        var html = "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content'>#</div></li>";
+        var positionSpecial = _.random(7);
+        var liArray = _.times(8, function(index) {
+            if (index === positionSpecial) {
+                return "<li><div class='content special'>&#135;&#135;</div></li>";
+            }
+            return "<li><div class='content'>#</div></li>";
+        });
 
-        html += "<li><div class='content'>G</div></li>";
-        html += "<li><div class='content'>A</div></li>";
-        html += "<li><div class='content'>M</div></li>";
-        html += "<li><div class='content'>E</div></li>";
+        liArray.splice(4, 0,
+            "<li><div class='content'>G</div></li>",
+            "<li><div class='content'>A</div></li>",
+            "<li><div class='content'>M</div></li>",
+            "<li><div class='content'>E</div></li>",
+            "<li><div class='content'>O</div></li>",
+            "<li><div class='content'>V</div></li>",
+            "<li><div class='content'>E</div></li>",
+            "<li><div class='content'>R</div></li>"
+        );
 
-        html += "<li><div class='content'>O</div></li>";
-        html += "<li><div class='content'>V</div></li>";
-        html += "<li><div class='content'>E</div></li>";
-        html += "<li><div class='content'>R</div></li>";
-
-        html += "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content'>#</div></li>";
-        html += "<li><div class='content special'>&#135;&#135;</div></li>";
-        html += "<li><div class='content'>#</div></li>";
-
-        $(".game-grid").html(html);
+        $(".game-grid").html(liArray.join(''));
         $("#timer").hide();
         $("#replay").show();
         $("#score-value").html(score);
