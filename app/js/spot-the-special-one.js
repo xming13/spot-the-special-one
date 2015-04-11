@@ -384,17 +384,15 @@ XMing.GameStateManager = new function() {
         }
     };
     this.showLeaderboard = function() {
-        var self = this;
-
         $(".panel-main").hide();
         $(".panel-leaderboard").show();
 
         $(".highscore-list").html("");
 
-        if (!userData.leaderboard.mushrooms) {
-            userData.leaderboard.mushrooms = true;
-            self.saveData(userData);
-            self.checkLeaderboardEasterEgg();
+        if (!userData.leaderboard.specialOne) {
+            userData.leaderboard.specialOne = true;
+            this.saveData(userData);
+            this.checkLeaderboardEasterEgg();
         }
 
         $.get("http://weiseng.redairship.com/leaderboard/api/1/highscore.json?game_id=4", function(data) {
