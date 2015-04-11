@@ -493,9 +493,9 @@ XMing.GameStateManager = new function() {
             easterEgg: {
                 allGames: false,
                 allLeaderboard: false,
-                findTheWord: false,
-                followTheNumbers: false,
-                spotTheSpecialOne: false,
+                word: false,
+                numbers: false,
+                specialOne: false,
                 mushrooms: false,
                 squirrel: false
             },
