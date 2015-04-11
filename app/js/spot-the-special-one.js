@@ -348,14 +348,21 @@ XMing.GameStateManager = new function() {
         });
 
         $(".special").click(function() {
-            swal({
-                title: 'Congratulations!',
-                text: 'You have found the Yellow Egg!',
-                imageUrl: 'images/yellow-egg.png'
-            });
-
-            userData.easterEgg.specialOne = true;
-            self.saveData(userData);
+            if (!userData.easterEgg.specialOne) {
+                userData.easterEgg.specialOne = true;
+                self.saveData(userData);
+                swal({
+                    title: 'Congratulations!',
+                    text: 'You have found the Yellow Egg!',
+                    imageUrl: 'images/yellow-egg.png'
+                });
+            } else {
+                swal({
+                    title: 'Congra... Oops!',
+                    text: 'You have collected the Yellow Egg already!',
+                    imageUrl: 'images/yellow-egg.png'
+                });
+            }
         });
 
         if (!userData.played.specialOne) {
