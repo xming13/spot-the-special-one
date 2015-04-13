@@ -396,7 +396,7 @@ XMing.GameStateManager = new function() {
                 });
             } else {
                 swal({
-                    title: 'Congra... Oops!',
+                    title: 'Hello!',
                     text: 'You have collected the Yellow Egg already!',
                     imageUrl: 'images/yellow-egg.png'
                 });
