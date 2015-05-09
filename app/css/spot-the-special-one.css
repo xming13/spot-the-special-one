@@ -42,7 +42,7 @@ a {
   margin: 0 auto 30px; }
 
 .panel-container {
-  padding: 2%;
+  padding: 3%;
   text-align: center; }
 
 .panel-main {
@@ -159,7 +159,7 @@ a {
   opacity: 1; }
 
 .icon-repeat {
-  margin-left: 20px; }
+  margin-left: 5px; }
 
 .icon-back-holder {
   position: absolute; }
@@ -208,6 +208,7 @@ a {
 
 .game-grid {
   padding: 0;
+  margin: 0;
   list-style: none;
   position: relative;
   background: #FFEB00; }
