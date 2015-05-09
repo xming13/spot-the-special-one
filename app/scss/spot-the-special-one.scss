@@ -160,10 +160,11 @@ a {
 .icon-circle:after {
     content: attr(data-info);
     position: absolute;
-    top: -28px;
+    top: -22px;
     left: 0;
     width: 95px;
     text-align: left;
+    font-size: 14px;
     font-weight: bold;
     color: #444;
     opacity: 0;
@@ -298,16 +299,17 @@ a {
     margin: 0;
     padding: 0;
     background: #FFF6B8;
-    min-height: 400px;
+    min-height: 402px;
 }
 
 .highscore-list li {
-    height: 40px;
+    height: 42px;
+    margin-bottom: -2px;
     border: 2px solid #B69800;
     background: #FCFF7E;
     color: #96874A;
     font-size: 20px;
-    line-height: 40px;
+    line-height: 42px;
     list-style: none;
 }
 
@@ -393,10 +395,13 @@ a {
     overflow: hidden !important;
 }
 
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 540px) {
+/* Mobile Phones Portrait or Landscape */
+@media screen and (max-device-width : 640px) {
     .main-content {
+        margin: 0;
+    }
+
+    .subtitle {
         margin: 0;
     }
 
@@ -424,11 +429,26 @@ and (max-device-width : 540px) {
         left: 0;
     }
 
+    .heading {
+        font-size: 25px;
+        line-height: 40px;
+    }
+
     .icon-back:after {
         content: '';
     }
 
+    .scoreboard {
+        margin-bottom: 10px;
+    }
+
     .highscore-list {
-        min-height: 360px;
+        min-height: 302px;
+
+        li {
+            height: 32px;
+            line-height: 32px;
+            font-size: 16px;
+        }
     }
 }
