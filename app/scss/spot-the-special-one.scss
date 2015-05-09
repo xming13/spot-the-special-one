@@ -46,7 +46,6 @@ a {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    margin: 0 auto 30px;
 }
 
 .panel-container {
@@ -398,10 +397,6 @@ a {
 
 /* Mobile Phones Portrait or Landscape */
 @media screen and (max-device-width : 640px) {
-    .main-content {
-        margin: 0;
-    }
-
     .subtitle {
         margin: 0;
     }
