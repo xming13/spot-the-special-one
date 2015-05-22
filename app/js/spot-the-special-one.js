@@ -352,6 +352,7 @@ XMing.GameStateManager = new function() {
                 imageUrl: "images/love.png",
                 type: "input",
                 text: "Write your name here! It will appear in the leaderboard!",
+                inputValue: userData.username,
                 closeOnConfirm: false
             }, function(playerName) {
                 if (playerName == "") {
@@ -380,7 +381,6 @@ XMing.GameStateManager = new function() {
                     });
                 }
             });
-            $('.sweet-alert input[type=text]:first').val(userData.username);
         });
 
         $(".special").click(function() {
