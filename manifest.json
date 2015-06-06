@@ -1,0 +1,13 @@
+{
+    "short_name": "spot_the_special_one",
+    "name": "Spot The Special One",
+    "icons": [
+        {
+            "src": "images/iilii.png",
+            "sizes": "100x100"
+        }
+    ],
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "orientation": "portrait"
+}
